@@ -70,7 +70,7 @@ pub use self::connect::HttpConnector;
 pub mod conn;
 pub mod connect;
 pub(crate) mod dispatch;
-mod pool;
+pub mod pool;
 pub mod service;
 #[cfg(test)]
 #[cfg(feature = "runtime")]
@@ -377,7 +377,8 @@ where
         })
     }
 
-    fn connection_for(
+    /// TODO : Docs
+    pub fn connection_for(
         &self,
         pool_key: PoolKey,
     ) -> impl Future<Output = Result<Pooled<PoolClient<B>>, ClientError<B>>> {
@@ -632,8 +633,9 @@ impl Future for ResponseFuture {
 // ===== impl PoolClient =====
 
 // FIXME: allow() required due to `impl Trait` leaking types to this lint
+/// TODO : Docs
 #[allow(missing_debug_implementations)]
-struct PoolClient<B> {
+pub struct PoolClient<B> {
     conn_info: Connected,
     tx: PoolTx<B>,
 }
@@ -678,7 +680,8 @@ impl<B> PoolClient<B> {
 }
 
 impl<B: HttpBody + 'static> PoolClient<B> {
-    fn send_request_retryable(
+    /// TODO : Docs
+    pub fn send_request_retryable(
         &mut self,
         req: Request<B>,
     ) -> impl Future<Output = Result<Response<Body>, (crate::Error, Option<Request<B>>)>>
@@ -730,9 +733,9 @@ where
 
 // ===== impl ClientError =====
 
-// FIXME: allow() required due to `impl Trait` leaking types to this lint
-#[allow(missing_debug_implementations)]
-enum ClientError<B> {
+#[allow(missing_docs)]
+#[derive(Debug)]
+pub enum ClientError<B> {
     Normal(crate::Error),
     Canceled {
         connection_reused: bool,
