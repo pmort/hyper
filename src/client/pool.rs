@@ -1,3 +1,4 @@
+//!pub pool
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::fmt;
 use std::ops::{Deref, DerefMut};
